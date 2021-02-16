@@ -51,6 +51,12 @@
             <argument type="service" id="database_connection"/>
         </service>
 
+        <service id="kzorluoglu.rest_api.controller.category.category_controller"
+                 class="kzorluoglu\RestApiBundle\Controller\Category\CategoryController">
+            <argument type="service" id="kzorluoglu.rest_api.services.json_request_parser"/>
+            <argument type="service" id="database_connection"/>
+        </service>
+
 
     </services>
 

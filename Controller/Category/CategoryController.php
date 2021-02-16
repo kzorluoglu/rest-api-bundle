@@ -1,13 +1,14 @@
 <?php
 
-namespace kzorluoglu\RestApiBundle\Controller\Product;
+namespace kzorluoglu\RestApiBundle\Controller\Category;
 
 use Doctrine\DBAL\Connection;
 use kzorluoglu\RestApiBundle\Controller\RESTApiBaseController;
 use kzorluoglu\RestApiBundle\Interfaces\TokenAuthenticatedControllerInterface;
 use kzorluoglu\RestApiBundle\Services\JsonRequestParser;
+use PDO;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use TdbShopArticle;
+use TdbShopCategory;
 
 class CategoryController extends RESTApiBaseController implements TokenAuthenticatedControllerInterface
 {
@@ -69,33 +70,43 @@ class CategoryController extends RESTApiBaseController implements TokenAuthentic
         $limit = $this->jsonRequestParser->get('limit', 10);
         $offset = $this->jsonRequestParser->get('offset', 0);
         $sort = $this->getSortOrder();
-//        $term = $this->jsonRequestParser->get('term');
+        $search = $this->jsonRequestParser->get('term');
 
         $query = 'SELECT `id` FROM `shop_article` ORDER BY `datecreated` '.$sort.' LIMIT :offset, :limit';
+        $queryParams = [
+            'offset' => $offset,
+            'limit' => $limit,
+        ];
+        $queryParamTypes = [
+            'offset' => PDO::PARAM_INT,
+            'limit' => PDO::PARAM_INT,
+        ];
+
+        if (false == empty($search)) {
+            $query = 'SELECT `id` FROM `shop_category` WHERE `name` LIKE :searchValue OR `description` LIKE :searchValue ORDER BY `datecreated` '.$sort.' LIMIT :offset, :limit';
+            $queryParams['searchValue'] = '%'.$search.'%';
+            $queryParamTypes['searchValue'] = PDO::PARAM_STR;
+        }
+
         $stm = $this->connection->executeQuery(
             $query,
-            [
-                'offset' => $offset,
-                'limit' => $limit,
-            ],
-            [
-                'offset' => \PDO::PARAM_INT,
-                'limit' => \PDO::PARAM_INT,
-            ]
+            $queryParams,
+            $queryParamTypes
         );
 
         $data = [];
         while ($id = $stm->fetchColumn()) {
-            $product = new TdbShopArticle();
-            if (false === $product->Load($id)) {
+            $category = new TdbShopCategory();
+            if (false === $category->Load($id)) {
                 continue;
             }
-            $data['products'][] = $product;
+            $data['categories'][] = $category;
         }
 
         $data['limit'] = $limit;
         $data['offset'] = $offset;
         $data['sort'] = $sort;
+        $data['term'] = $search;
 
         return new JsonResponse($data);
     }

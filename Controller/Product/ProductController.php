@@ -6,11 +6,14 @@ use Doctrine\DBAL\Connection;
 use kzorluoglu\RestApiBundle\Controller\RESTApiBaseController;
 use kzorluoglu\RestApiBundle\Interfaces\TokenAuthenticatedControllerInterface;
 use kzorluoglu\RestApiBundle\Services\JsonRequestParser;
+use PDO;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TdbShopArticle;
 
 class ProductController extends RESTApiBaseController implements TokenAuthenticatedControllerInterface
 {
+    const SORT_ORDERS = ['ASC', 'DESC'];
+    const DEFAULT_SORT = 'ASC';
     private JsonRequestParser $jsonRequestParser;
     private Connection $connection;
 
@@ -55,6 +58,7 @@ class ProductController extends RESTApiBaseController implements TokenAuthentica
      *          @OA\Schema(
      *              @OA\Property(property="products", type="object", description="Products"),
      *              @OA\Property(property="limit", type="integer", description="Limit"),
+     *              @OA\Property(property="term", type="integer", description="Search Text"),
      *              @OA\Property(property="offset", type="integer", description="Offset"),
      *              @OA\Property(property="sort", type="string", description="Sorting prefix")
      *          ),
@@ -69,19 +73,28 @@ class ProductController extends RESTApiBaseController implements TokenAuthentica
         $limit = $this->jsonRequestParser->get('limit', 10);
         $offset = $this->jsonRequestParser->get('offset', 0);
         $sort = $this->getSortOrder();
-        $term = $this->jsonRequestParser->get('term');
+        $search = $this->jsonRequestParser->get('term');
 
         $query = 'SELECT `id` FROM `shop_article` ORDER BY `datecreated` '.$sort.' LIMIT :offset, :limit';
+        $queryParams = [
+            'offset' => $offset,
+            'limit' => $limit,
+        ];
+        $queryParamTypes = [
+            'offset' => PDO::PARAM_INT,
+            'limit' => PDO::PARAM_INT,
+        ];
+
+        if (false == empty($search)) {
+            $query = 'SELECT `id` FROM `shop_article` WHERE `name` LIKE :searchValue OR `description` LIKE :searchValue ORDER BY `datecreated` '.$sort.' LIMIT :offset, :limit';
+            $queryParams['searchValue'] = '%'.$search.'%';
+            $queryParamTypes['searchValue'] = PDO::PARAM_STR;
+        }
+
         $stm = $this->connection->executeQuery(
             $query,
-            [
-                'offset' => $offset,
-                'limit' => $limit,
-            ],
-            [
-                'offset' => \PDO::PARAM_INT,
-                'limit' => \PDO::PARAM_INT,
-            ]
+            $queryParams,
+            $queryParamTypes
         );
 
         $data = [];
@@ -96,6 +109,7 @@ class ProductController extends RESTApiBaseController implements TokenAuthentica
         $data['limit'] = $limit;
         $data['offset'] = $offset;
         $data['sort'] = $sort;
+        $data['term'] = $search;
 
         return new JsonResponse($data);
     }
@@ -103,8 +117,8 @@ class ProductController extends RESTApiBaseController implements TokenAuthentica
     private function getSortOrder(): string
     {
         $sort = $this->jsonRequestParser->get('sort');
-        if (false == in_array($sort, ['ASC', 'DESC'])) {
-            $sort = 'ASC';
+        if (false === in_array($sort, self::SORT_ORDERS)) {
+            $sort = self::DEFAULT_SORT;
         }
 
         return $sort;
