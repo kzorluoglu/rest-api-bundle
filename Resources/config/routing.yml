@@ -1,0 +1,9 @@
+kzorluoglu_esono_rest_api_login:
+  path: /login
+  defaults:  { _controller: kzorluoglu.rest_api.controller.login_controller:login }
+  methods: [POST]
+
+kzorluoglu_rest_api_products:
+  path: /products
+  defaults:  { _controller: kzorluoglu.rest_api.controller.product.product_controller:index }
+  methods: [GET]

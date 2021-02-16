@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <!--        Temporary-->
+        <parameter key="kzorluoglu.rest_api.transfer_token_service.algorithm">aes128</parameter>
+        <!--        Temporary-->
+    </parameters>
+
+    <services>
+        <!--        Temporary-->
+        <service id="kzorluoglu.rest_api.services.json_web_token_service"
+                class="\kzorluoglu\RestApiBundle\Services\JsonWebTokenService"
+                public="true">
+            <argument type="service" id="chameleon_system_core.system_time_provider"/>
+            <argument>%kernel.secret%</argument>
+            <argument>%kzorluoglu.rest_api.transfer_token_service.algorithm%</argument>
+        </service>
+        <!--        Temporary-->
+
+        <service id="kzorluoglu.rest_api.services.json_request_parser"
+                 class="kzorluoglu\RestApiBundle\Services\JsonRequestParser">
+            <argument type="service" id="request_stack"/>
+        </service>
+
+        <service id="kzorluoglu.rest_api.event_subscriber.token_subscriber" class="kzorluoglu\RestApiBundle\EventSubscriber\TokenSubscriber">
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController"/>
+            <argument type="service" id="kzorluoglu.rest_api.services.json_web_token_service"/>
+        </service>
+
+        <service id="kzorluoglu.rest_api.services.tdb_data_extranet_user" class="TdbDataExtranetUser" />
+
+        <service id="kzorluoglu.rest_api.services.login_service"
+            class="kzorluoglu\RestApiBundle\Services\LoginService">
+            <argument type="service" id="kzorluoglu.rest_api.services.tdb_data_extranet_user"/>
+        </service>
+
+        <service id="kzorluoglu.rest_api.controller.login_controller"
+                 class="kzorluoglu\RestApiBundle\Controller\LoginController">
+            <argument type="service" id="kzorluoglu.rest_api.services.login_service"/>
+            <argument type="service" id="kzorluoglu.rest_api.services.json_web_token_service"/>
+            <argument type="service" id="chameleon_system_extranet.extranet_user_provider"/>
+            <argument type="service" id="kzorluoglu.rest_api.services.json_request_parser"/>
+        </service>
+
+        <service id="kzorluoglu.rest_api.controller.product.product_controller"
+                 class="kzorluoglu\RestApiBundle\Controller\Product\ProductController">
+            <argument type="service" id="kzorluoglu.rest_api.services.json_request_parser"/>
+            <argument type="service" id="database_connection"/>
+        </service>
+
+
+    </services>
+
+</container>

@@ -1,0 +1,43 @@
+{
+    "name": "kzorluoglu/rest-api-bundle",
+    "type": "symfony-bundle",
+    "description": "A Symfony bundle for Chameleon",
+    "keywords": [
+        "rest",
+        "api",
+        "bundle",
+        "Symfony"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Koray Zorluoglu",
+            "email": "koray.zorluoglu@esono.de",
+            "homepage": "https://www.esono.de",
+            "role": "Developer"
+        }
+    ],
+    "extra": {
+        "name": "REST API Bundle",
+        "dev_info_installation": "",
+        "dev_info_usage": "",
+        "pricegroup": 0,
+        "public": false,
+        "screenshotfolder_id": ""
+    },
+    "autoload": {
+        "psr-4": {
+            "kzorluoglu\\RestApiBundle\\": [
+                ""
+            ]
+        }
+    },
+    "require": {
+        "zircote/swagger-php": "^3.1",
+        "ext-json": "*",
+        "chameleon-system/chameleon-base": "~7.0.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
