@@ -7,3 +7,8 @@ kzorluoglu_rest_api_products:
   path: /products
   defaults:  { _controller: kzorluoglu.rest_api.controller.product.product_controller:index }
   methods: [GET]
+
+kzorluoglu_rest_api_categories:
+  path: /categories
+  defaults:  { _controller: kzorluoglu.rest_api.controller.category.category_controller:index }
+  methods: [GET]
