@@ -1,4 +1,4 @@
-# REST API Bundle (Experimental)
+# REST API Bundle (WIP)
 
 This bundle provide REST API interface for Chameleon Shop. All Business-Features (not yet) be possible.
 
@@ -10,7 +10,7 @@ Actually Completed Features:
 
 * Install the Bundle via Composer
 ```
- composer.sh require kzorluoglu/rest-api-bundle:dev-initial
+ composer.sh require kzorluoglu/rest-api-bundle:dev-master
 ```
 
 * Add the Bundle in app/AppKernel.php
@@ -58,7 +58,6 @@ Class | Method | HTTP request | Description
 ```bash
 cd /vendor/kzorluoglu/rest-api-bundle
 composer install
-cd return/project/root
 ```
 and Run Tests
 ```bash
@@ -69,6 +68,10 @@ and Run Tests
 
 ### Create a new openapi yaml after changes
 ```
+./vendor/bin/openapi -o api.yml  /your/root/path/vendor/kzorluoglu/rest-api-bundle/Controller
+```
+Example:
+```bash
 ./vendor/bin/openapi -o api.yml  /usr/local/apache2/htdocs/customer/vendor/kzorluoglu/rest-api-bundle/Controller
 ```
 1. Check if api.yml exists

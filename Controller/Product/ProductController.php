@@ -69,7 +69,7 @@ class ProductController extends RESTApiBaseController implements TokenAuthentica
         $limit = $this->jsonRequestParser->get('limit', 10);
         $offset = $this->jsonRequestParser->get('offset', 0);
         $sort = $this->getSortOrder();
-//        $term = $this->jsonRequestParser->get('term');
+        $term = $this->jsonRequestParser->get('term');
 
         $query = 'SELECT `id` FROM `shop_article` ORDER BY `datecreated` '.$sort.' LIMIT :offset, :limit';
         $stm = $this->connection->executeQuery(
