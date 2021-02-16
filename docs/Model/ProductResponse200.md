@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**products** | **object** | Products Array | 
-**limit** | **int** | Product Limit | 
+**products** | **object** | Products | 
+**limit** | **int** | Limit | 
 **offset** | **int** | Offset | 
 **sort** | **string** | Sorting prefix |
 

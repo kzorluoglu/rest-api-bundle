@@ -46,10 +46,10 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
-- [Body](docs/Model/Body.md)
-- [Body1](docs/Model/Body1.md)
-- [InlineResponse200](docs/Model/InlineResponse200.md)
-- [InlineResponse2001](docs/Model/InlineResponse2001.md)
+- [LoginBody](docs/Model/LoginBody.md)
+- [Product Body](docs/Model/ProductBody.md)
+- [Login Response (Status Code: 200)](docs/Model/LoginResponse200.md)
+- [Product Response (Status Code: 200)](docs/Model/ProductResponse200.md)
 
 
 # Tests
