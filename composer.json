@@ -36,7 +36,7 @@
         "php": "^7.4",
         "zircote/swagger-php": "^3.1",
         "ext-json": "*",
-        "chameleon-system/chameleon-base": "~7.0.0",
+        "chameleon-system/chameleon-base": "^7.1.0",
         "ext-pdo": "*"
     },
     "require-dev": {
