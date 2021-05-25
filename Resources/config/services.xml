@@ -38,7 +38,7 @@
         </service>
 
         <service id="kzorluoglu.rest_api.controller.login_controller"
-                 class="kzorluoglu\RestApiBundle\Controller\LoginController">
+                 class="kzorluoglu\RestApiBundle\Controller\LoginController" public="true">
             <argument type="service" id="kzorluoglu.rest_api.services.login_service"/>
             <argument type="service" id="kzorluoglu.rest_api.services.json_web_token_service"/>
             <argument type="service" id="chameleon_system_extranet.extranet_user_provider"/>
@@ -46,17 +46,22 @@
         </service>
 
         <service id="kzorluoglu.rest_api.controller.product.product_controller"
-                 class="kzorluoglu\RestApiBundle\Controller\Product\ProductController">
+                 class="kzorluoglu\RestApiBundle\Controller\Product\ProductController" public="true">
             <argument type="service" id="kzorluoglu.rest_api.services.json_request_parser"/>
             <argument type="service" id="database_connection"/>
         </service>
 
         <service id="kzorluoglu.rest_api.controller.category.category_controller"
-                 class="kzorluoglu\RestApiBundle\Controller\Category\CategoryController">
+                 class="kzorluoglu\RestApiBundle\Controller\Category\CategoryController" public="true">
             <argument type="service" id="kzorluoglu.rest_api.services.json_request_parser"/>
             <argument type="service" id="database_connection"/>
         </service>
 
+        <service id="kzorluoglu.rest_api.controller.bestseller_controller"
+                 class="kzorluoglu\RestApiBundle\Controller\BestsellerController" public="true">
+            <argument type="service" id="database_connection"/>
+            <argument type="service" id="request_stack"/>
+        </service>
 
     </services>
 

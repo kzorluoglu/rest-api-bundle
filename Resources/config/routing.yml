@@ -12,3 +12,8 @@ kzorluoglu_rest_api_categories:
   path: /categories
   defaults:  { _controller: kzorluoglu.rest_api.controller.category.category_controller:index }
   methods: [GET]
+
+kzorluoglu_rest_api_bestsellers:
+  path: /bestseller
+  defaults:  { _controller: kzorluoglu.rest_api.controller.bestseller_controller:index }
+  methods: [GET]
